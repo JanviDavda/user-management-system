@@ -12,7 +12,6 @@ const db = mysql.createConnection({
 const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.register = (req, res) => {
-    console.log(req.body);
     const {name, email, password, passwordConfirm} = req.body; //object destructuring
     
     db.query('SELECT email FROM users where email = ?', [email], async(error, results) => {
@@ -29,13 +28,11 @@ exports.register = (req, res) => {
         }
 
         let hashedPassword = await bcrypt.hash(password, 8);
-        console.log(hashedPassword);
 
         db.query('INSERT INTO users SET ?', {name: name, email: email, password: hashedPassword}, (error, results) => {
             if(error){
                 console.log(error);
             } else {
-                console.log(results);
                 res.render('register', {
                     message : 'User Registered Successfully!'
                 });
@@ -45,7 +42,6 @@ exports.register = (req, res) => {
 }
 
 exports.login = async(req, res) => {
-    console.log(req.body);
     const {email, password} = req.body; //object destructuring
 
     db.query('Select * FROM users where email = ?',[email], (error, results) => {

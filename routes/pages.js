@@ -49,7 +49,6 @@ router.post('/dashboard', upload.single('image'), (req, res) => {
 
 
     var decoded;
-    console.log("decoded",req.cookies.jwt);
     try{
         decoded = jsonwebtoken.verify(req.cookies.jwt, process.env.JWT_SECRET);
     } catch(error){
@@ -90,8 +89,6 @@ router.get('/updatedImage', upload.single('image'), (req, res) => {
         let image
         const imageName = result[0].image;
 
-        console.log("imageName", imageName);
-        console.log(process.env.UPLOADS_FOLDER_PATH + `/${imageName}`);
         sharp(process.env.UPLOADS_FOLDER_PATH + `/${imageName}`)
             .resize(100)
             .toBuffer()
